@@ -45,12 +45,13 @@ if($quick ne "")
 # Convert applicable arguments to lowercase.
 $source_type = lc($source_type);
 
-# Invalid source-type option specified.
+# No byte-string specified for "quick" mode.
 if($quick eq "")
 {
 	$error = "No source byte-string specified for \"quick\" mode.";
 	&show_error($error);
 }
+# Invalid source-type option specified.
 elsif($source_type ne "file" && $source_type ne "string")
 {
 	$error = "Invalid source-type specified (valid options are \"file\" and \"string\").";
