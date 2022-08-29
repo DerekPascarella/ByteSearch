@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.0
+# ByteSearch v1.1
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte string.
@@ -16,26 +16,42 @@ use Getopt::Long;
 my $source_type;
 my $source;
 my $target;
+my $quick;
 
 # Our variables.
 my @files;
 my $error;
 my $bytes_source;
 my $bytes_target;
+my $bytes_index;
 my $match_count = 0;
 
 # Define our parameters and arguments.
 GetOptions(
 	'source_type=s' => \$source_type,
 	'source=s' => \$source,
-	'target=s' => \$target
+	'target=s' => \$target,
+	'quick=s' => \$quick
 );
+
+# In quick mode, use default settings.
+if($quick ne "")
+{
+	$source_type = "string";
+	$source = $quick;
+	$target = ".";
+}
 
 # Convert applicable arguments to lowercase.
 $source_type = lc($source_type);
 
 # Invalid source-type option specified.
-if($source_type ne "file" && $source_type ne "string")
+if($quick eq "")
+{
+	$error = "No source byte-string specified for \"quick\" mode.";
+	&show_error($error);
+}
+elsif($source_type ne "file" && $source_type ne "string")
 {
 	$error = "Invalid source-type specified (valid options are \"file\" and \"string\").";
 	&show_error($error);
@@ -60,7 +76,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.0\n";
+print "\nByteSearch v1.1\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -99,6 +115,9 @@ foreach(@files)
 	# Source byte-string was found in target file.
 	if($bytes_target =~ $bytes_source)
 	{
+		# Store offset of match.
+		$bytes_index = &decimal_to_hex(index($bytes_target, $bytes_source) / 2, 1);
+
 		# Correct forward slash.
 		if($^O =~ "MSWin")
 		{
@@ -106,7 +125,7 @@ foreach(@files)
 		}
 		
 		# Print status message.
-		print "> Match found!\n";
+		print "> Match found (offset 0x$bytes_index):\n";
 		print "  $_\n\n";
 
 		# Increase match count by one.
@@ -115,7 +134,7 @@ foreach(@files)
 }
 
 # Print status message.
-print "> Scan complete! Found " . $match_count . " match";
+print "> Scan complete! Found $match_count match";
 
 # Continue status message.
 if($match_count > 1)
@@ -133,7 +152,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "ByteSearch v1.0\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n";
+	die "ByteSearch v1.1\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
@@ -151,4 +170,13 @@ sub read_bytes
 	close $filehandle;
 	
 	return unpack 'H*', $bytes;
+}
+
+# Subroutine to return hexadecimal representation of a decimal number.
+#
+# 1st parameter - Decimal number.
+# 2nd parameter - Number of bytes with which to represent hexadecimal number.
+sub decimal_to_hex
+{
+	return sprintf("%0" . $_[1] * 2 . "X", $_[0]);
 }
