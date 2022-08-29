@@ -33,7 +33,7 @@ Search the folder `C:\path` for any files containing the contents of the file `C
 ```
 byte_search --source_type file --source C:\files\source.bin --target C:\path
 ```
-Search current working directory for any files containing the byte-string `50565254`
+Search current working directory for any files containing the byte-string `50565254`:
 ```
 byte_search --quick 50565254
 ```
