@@ -42,7 +42,7 @@ Written by Derek Pascarella (ateam)
 
 > Initiating scan process against 11 files...
 
-> Match found!
+> Match found (offset 0x1F4):
   C:\path\subfolder\1ST_READ.BIN
 
 > Scan complete! Found 1 match total.
