@@ -32,7 +32,7 @@ GetOptions(
 	'source=s' => \$source,
 	'target=s' => \$target,
 	'quick=s' => \$quick
-);
+) or die(&show_error("Invalid option specified.", "arguments"));
 
 # In quick mode, use default settings.
 if($quick ne "")
@@ -67,6 +67,12 @@ elsif($source_type eq "file" && (!-e $source || !-R $source))
 elsif($source_type eq "string" && $source eq "")
 {
 	$error = "No source byte-string specified.";
+	&show_error($error);
+}
+# No target folder specified.
+elsif($target eq "")
+{
+	$error = "No target folder specified.";
 	&show_error($error);
 }
 # Target search folder does not exist or isn't readable.
@@ -154,7 +160,14 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "ByteSearch v1.1\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n";
+	if($_[1] eq "arguments")
+	{
+		die "\nByteSearch v1.1\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n";
+	}
+	else
+	{
+		die "ByteSearch v1.1\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n";
+	}
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
