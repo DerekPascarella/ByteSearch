@@ -45,8 +45,14 @@ if($quick ne "")
 # Convert applicable arguments to lowercase.
 $source_type = lc($source_type);
 
+# No options were specified.
+if(scalar(@ARGV) == 0)
+{
+	$error = "No options specified.";
+	&show_error($error);
+}
 # No byte-string specified for "quick" mode.
-if($quick eq "" && $source_type eq "" && $source eq "" && $target eq "")
+elsif($quick eq "" && $source_type eq "" && $source eq "" && $target eq "")
 {
 	$error = "No source byte-string specified for \"quick\" mode.";
 	&show_error($error);
