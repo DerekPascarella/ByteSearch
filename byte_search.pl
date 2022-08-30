@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.1
+# ByteSearch v1.2
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte string.
@@ -46,7 +46,7 @@ if($quick ne "")
 $source_type = lc($source_type);
 
 # No byte-string specified for "quick" mode.
-if($quick eq "")
+if($quick eq "" && $source_type eq "" && $source eq "" && $target eq "")
 {
 	$error = "No source byte-string specified for \"quick\" mode.";
 	&show_error($error);
