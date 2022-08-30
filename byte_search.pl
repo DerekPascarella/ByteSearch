@@ -3,7 +3,7 @@
 # ByteSearch v1.2
 # Written by Derek Pascarella (ateam)
 #
-# A utility to recursively scan a folder of files for a known byte string.
+# A utility to recursively scan a folder of files for a known byte-string.
 
 # Use strict policy on syntax and data-types.
 use strict;
