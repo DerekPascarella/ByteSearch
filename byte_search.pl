@@ -3,7 +3,7 @@
 # ByteSearch v1.2
 # Written by Derek Pascarella (ateam)
 #
-# A utility to recursively scan a folder of files for a known byte-string.
+# A utility to recursively scan a folder of files for a known byte string.
 
 # Use strict policy on syntax and data-types.
 use strict;
@@ -52,8 +52,14 @@ if($quick ne "")
 # Convert applicable arguments to lowercase.
 $source_type = lc($source_type);
 
+# No byte-string specified for "quick" mode.
+if($quick eq "" && $source_type eq "" && $source eq "" && $target eq "")
+{
+	$error = "No source byte-string specified for \"quick\" mode.";
+	&show_error($error);
+}
 # Invalid source-type option specified.
-if($source_type ne "file" && $source_type ne "string")
+elsif($source_type ne "file" && $source_type ne "string")
 {
 	$error = "Invalid source-type specified (valid options are \"file\" and \"string\").";
 	&show_error($error);
