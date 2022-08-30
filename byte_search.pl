@@ -91,7 +91,7 @@ if($source_type eq "string")
 elsif($source_type eq "file")
 {
 	# Convert byte-string to uppercase and remove whitespace.
-	($bytes_source = uc(&read_bytes($source, (stat $source)[7]))) =~ s/\s+//g;
+	($bytes_source = uc(&read_bytes($source))) =~ s/\s+//g;
 }
 
 # Remove trailing double-quotation mark from target path if present from a known issue with
