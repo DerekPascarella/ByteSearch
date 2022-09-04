@@ -3,7 +3,7 @@
 # ByteSearch v1.2
 # Written by Derek Pascarella (ateam)
 #
-# A utility to recursively scan a folder of files for a known byte string.
+# A utility to recursively scan a folder of files for a known byte-string.
 
 # Use strict policy on syntax and data-types.
 use strict;
@@ -52,14 +52,8 @@ if($quick ne "")
 # Convert applicable arguments to lowercase.
 $source_type = lc($source_type);
 
-# No byte-string specified for "quick" mode.
-if($quick eq "" && $source_type eq "" && $source eq "" && $target eq "")
-{
-	$error = "No source byte-string specified for \"quick\" mode.";
-	&show_error($error);
-}
 # Invalid source-type option specified.
-elsif($source_type ne "file" && $source_type ne "string")
+if($source_type ne "file" && $source_type ne "string")
 {
 	$error = "Invalid source-type specified (valid options are \"file\" and \"string\").";
 	&show_error($error);
@@ -96,7 +90,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.1\n";
+print "\nByteSearch v1.2\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -173,7 +167,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.1\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n\n";
+	die "\nByteSearch v1.2\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <string>\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
