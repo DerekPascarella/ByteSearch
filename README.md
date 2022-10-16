@@ -22,7 +22,7 @@ byte_search --source_type <file|string> --source <path_to_file|byte_string> --ta
 ```
 Quick mode, which assumes `--source_type` as `string` and `--target` as the current working directory.
 ```
-byte_search --quick <string>
+byte_search --quick <byte_string>
 ```
 
 
