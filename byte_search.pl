@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.2
+# ByteSearch v1.3
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte-string.
@@ -24,6 +24,8 @@ my $error;
 my $bytes_source;
 my $bytes_target;
 my $bytes_index;
+my $match_rolling_index;
+my $match_rolling_offset = 0;
 my $match_count = 0;
 
 # No options were specified.
@@ -90,7 +92,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.2\n";
+print "\nByteSearch v1.3\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -130,21 +132,34 @@ foreach(@files)
 	# Source byte-string was found in target file.
 	if($bytes_target =~ $bytes_source)
 	{
-		# Store offset of match.
-		$bytes_index = &decimal_to_hex(index($bytes_target, $bytes_source) / 2);
+		# Store index of first match in target file.
+		$match_rolling_index = index($bytes_target, $bytes_source, $match_rolling_offset);
 
-		# Correct forward slash.
-		if($^O =~ "MSWin")
+		# Continue searching target file for additional matches.
+		while($match_rolling_index != -1)
 		{
-			$_ =~ s/\//\\/g;
-		}
-		
-		# Print status message.
-		print "> Match found (offset 0x$bytes_index):\n";
-		print "  $_\n\n";
+			# Store offset of match.
+			$bytes_index = &decimal_to_hex(index($bytes_target, $bytes_source, $match_rolling_offset) / 2);
 
-		# Increase match count by one.
-		$match_count ++;
+			# Correct forward slash.
+			if($^O =~ "MSWin")
+			{
+				$_ =~ s/\//\\/g;
+			}
+			
+			# Print status message.
+			print "> Match found (offset 0x$bytes_index):\n";
+			print "  $_\n\n";
+
+			# Increase match count by one.
+			$match_count ++;
+
+			# Increase search offset by one byte.
+			$match_rolling_offset = $match_rolling_index + 2;
+			
+			# Store index of next potential match.
+			$match_rolling_index = index($bytes_target, $bytes_source, $match_rolling_offset);
+		}
 	}
 }
 
@@ -167,7 +182,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.2\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
+	die "\nByteSearch v1.3\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
