@@ -4,9 +4,11 @@ A utility to recursively scan a folder of files for a known byte-string.
 This utility will recursively scan through a folder (and all of its subfolders) to find any files containing a specific byte-string, or the contents of a specific binary file.
 
 ## Current Version
-ByteSearch is currently at version [1.2](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
+ByteSearch is currently at version [1.3](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
 
 ## Changelog
+* Version 1.3 (2022-11-11)
+  * Added support for returning multiple matches found in a single file.
 * Version 1.2 (2022-08-30)
   * Fixed bug in implementation of `--quick` option.
 * Version 1.1 (2022-08-29)
@@ -44,7 +46,7 @@ byte_search --quick 50565254
 ```
 PS C:\> .\byte_search.exe --source_type string --source 8140814082BD82D182C2 --target C:\path
 
-ByteSearch v1.2
+ByteSearch v1.3
 Written by Derek Pascarella (ateam)
 
 > Gathering list of all files in target scan folder...
