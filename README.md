@@ -4,7 +4,7 @@ A utility to recursively scan a folder of files for a known byte-string.
 This utility will recursively scan through a folder (and all of its subfolders) to find any files containing a specific byte-string, or the contents of a specific binary file.
 
 ## Current Version
-ByteSearch is currently at version [1.3](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
+ByteSearch is currently at version [1.4](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
 
 ## Changelog
 * Version 1.4 (2022-11-21)
