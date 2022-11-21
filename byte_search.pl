@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.3
+# ByteSearch v1.4
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte-string.
@@ -92,7 +92,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.3\n";
+print "\nByteSearch v1.4\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -130,7 +130,7 @@ foreach(@files)
 	($bytes_target = uc(&read_bytes($_))) =~ s/\s+//g;
 
 	# Source byte-string was found in target file.
-	if($bytes_target =~ $bytes_source)
+	if($bytes_target =~ $bytes_source && index($bytes_target, $bytes_source, 0) % 2 == 0)
 	{
 		# Store index of first match in target file.
 		$match_rolling_index = index($bytes_target, $bytes_source, $match_rolling_offset);
@@ -182,7 +182,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.3\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
+	die "\nByteSearch v1.4\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
