@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.5
+# ByteSearch v1.6
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte-string.
@@ -26,6 +26,7 @@ my $bytes_target;
 my $bytes_index;
 my $match_rolling_index;
 my $match_rolling_offset;
+my $match_first_found;
 my $match_count = 0;
 
 # No options were specified.
@@ -92,7 +93,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.5\n";
+print "\nByteSearch v1.6\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -126,9 +127,12 @@ print "> Initiating scan process against " . scalar(@files) . " files...\n\n";
 # Iterate through each element of "files", checking each one for match against source.
 foreach(@files)
 {
-	# Set rolling index and offset variables.
+	# Reset rolling index and offset variables.
 	$match_rolling_index = 0;
 	$match_rolling_offset = 0;
+
+	# Reset flag signifying a file's first match has been found.
+	$match_first_found = 0;
 
 	# Store target byte-string and convert it to uppercase and remove whitespace.
 	($bytes_target = uc(&read_bytes($_))) =~ s/\s+//g;
@@ -152,8 +156,15 @@ foreach(@files)
 			}
 			
 			# Print status message.
-			print "> Match found (offset 0x$bytes_index):\n";
-			print "  $_\n\n";
+			if($match_first_found == 0)
+			{
+				print "> $_\n";
+				
+				# Set flag signifying first match was found so that filename isn't printed again.
+				$match_first_found = 1;
+			}
+
+			print "  - Offset 0x$bytes_index\n";
 
 			# Increase match count by one.
 			$match_count ++;
@@ -164,6 +175,9 @@ foreach(@files)
 			# Store index of next potential match.
 			$match_rolling_index = index($bytes_target, $bytes_source, $match_rolling_offset);
 		}
+
+		# Add additional line break.
+		print "\n";
 	}
 }
 
@@ -186,7 +200,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.5\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
+	die "\nByteSearch v1.6\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
