@@ -4,9 +4,11 @@ A utility to recursively scan a folder of files for a known byte-string.
 This utility will recursively scan through a folder (and all of its subfolders) to find any files containing a specific byte-string, or the contents of a specific binary file.
 
 ## Current Version
-ByteSearch is currently at version [1.5](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
+ByteSearch is currently at version [1.6](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
 
 ## Changelog
+* Version 1.6 (2023-01-20)
+  * Multiple matches within a single file are now grouped for better readability.
 * Version 1.5 (2023-01-19)
   * Fixed bug ignoring matches.
 * Version 1.4 (2022-11-21)
@@ -50,15 +52,33 @@ byte_search --quick 50565254
 ```
 PS C:\> .\byte_search.exe --source_type string --source 8140814082BD82D182C2 --target C:\path
 
-ByteSearch v1.5
+ByteSearch v1.6
 Written by Derek Pascarella (ateam)
 
 > Gathering list of all files in target scan folder...
 
-> Initiating scan process against 11 files...
+> Initiating scan process against 4 files...
 
-> Match found (offset 0x1F4):
-  C:\path\subfolder\1ST_READ.BIN
+> 1ST_READ.SH2
+  - Offset 0x49344
 
-> Scan complete! Found 1 match total.
+> MESSAGE.TK3
+  - Offset 0x5C6
+
+> PREFILE.TK3
+  - Offset 0x5C6
+  - Offset 0x110A0
+  - Offset 0x1110B
+  - Offset 0x117D1
+  - Offset 0x13236
+  - Offset 0x159D3
+  - Offset 0x15A3E
+  - Offset 0x16042
+  - Offset 0x16DF9
+  - Offset 0x17D34
+
+> TK3ROOT.SH2
+  - Offset 0x49344
+
+> Scan complete! Found 13 matches total.
 ```
