@@ -50,7 +50,7 @@ byte_search --quick 50565254
 ```
 PS C:\> .\byte_search.exe --source_type string --source 8140814082BD82D182C2 --target C:\path
 
-ByteSearch v1.4
+ByteSearch v1.5
 Written by Derek Pascarella (ateam)
 
 > Gathering list of all files in target scan folder...
