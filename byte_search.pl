@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.4
+# ByteSearch v1.5
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte-string.
@@ -25,7 +25,7 @@ my $bytes_source;
 my $bytes_target;
 my $bytes_index;
 my $match_rolling_index;
-my $match_rolling_offset = 0;
+my $match_rolling_offset;
 my $match_count = 0;
 
 # No options were specified.
@@ -92,7 +92,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.4\n";
+print "\nByteSearch v1.5\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -126,6 +126,10 @@ print "> Initiating scan process against " . scalar(@files) . " files...\n\n";
 # Iterate through each element of "files", checking each one for match against source.
 foreach(@files)
 {
+	# Set rolling index and offset variables.
+	$match_rolling_index = 0;
+	$match_rolling_offset = 0;
+
 	# Store target byte-string and convert it to uppercase and remove whitespace.
 	($bytes_target = uc(&read_bytes($_))) =~ s/\s+//g;
 
@@ -182,7 +186,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.4\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
+	die "\nByteSearch v1.5\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
