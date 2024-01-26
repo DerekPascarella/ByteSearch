@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# ByteSearch v1.6
+# ByteSearch v1.7
 # Written by Derek Pascarella (ateam)
 #
 # A utility to recursively scan a folder of files for a known byte-string.
@@ -17,6 +17,7 @@ my $source_type;
 my $source;
 my $target;
 my $quick;
+my $ignore;
 
 # Our variables.
 my @files;
@@ -41,7 +42,8 @@ GetOptions(
 	'source_type=s' => \$source_type,
 	'source=s' => \$source,
 	'target=s' => \$target,
-	'quick=s' => \$quick
+	'quick=s' => \$quick,
+	'ignore=s' => \$ignore
 ) or &show_error("Invalid option specified.");
 
 # In quick mode, use default settings.
@@ -93,7 +95,7 @@ elsif(!-e $target || !-R $target)
 }
 
 # Print status message.
-print "\nByteSearch v1.6\n";
+print "\nByteSearch v1.7\n";
 print "Written by Derek Pascarella (ateam)\n\n";
 print "> Gathering list of all files in target scan folder...\n\n";
 
@@ -120,6 +122,21 @@ if(substr($target, -1) eq "\"" || substr($target, -1) eq "\\")
 # Recursively iterate through all files and folder in target folder and store each as an index of
 # "files".
 find(sub { push @files, $File::Find::name unless -d; }, $target);
+
+# Filter ignored file extensions, if specified.
+if($ignore ne "")
+{
+	# Store each file extension into element of array.
+	my @ignored_extensions = split(/,/, $ignore);
+
+	# Remove each ignored extension from file list.
+	foreach(@ignored_extensions)
+	{
+		my $extension = $_;
+
+		@files = grep { !/\.$extension$/i } @files;
+	}
+}
 
 # Print status message.
 print "> Initiating scan process against " . scalar(@files) . " files...\n\n";
@@ -200,7 +217,7 @@ sub show_error
 {
 	my $error = $_[0];
 
-	die "\nByteSearch v1.6\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string> --target <path_to_folder>\n       byte_search --quick <byte_string>\n\n";
+	die "\nByteSearch v1.7\nWritten by Derek Pascarella (ateam)\n\n$error\n\nUsage: byte_search --source_type <file|string> --source <path_to_file|byte_string>\n                   --target <path_to_folder> [--ignore <comma_separated_file_extensions>]\n       byte_search --quick <byte_string> [--ignore <comma_separated_file_extensions>]\n\n";
 }
 
 # Subroutine to read a specified number of bytes (starting at the beginning) of a specified file,
