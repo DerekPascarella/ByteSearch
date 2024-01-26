@@ -7,7 +7,7 @@ This utility will recursively scan through a folder (and all of its subfolders) 
 ByteSearch is currently at version [1.7](https://github.com/DerekPascarella/ByteSearch/raw/main/byte_search.exe).
 
 ## Changelog
-* Version 1.7 (2024-001-26)
+* Version 1.7 (2024-01-26)
   * Added `--ignore` option to omit a list of file extensions from search.
 * Version 1.6 (2023-01-20)
   * Multiple matches within a single file are now grouped for better readability.
